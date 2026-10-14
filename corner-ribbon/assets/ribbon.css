@@ -1,0 +1,113 @@
+/* Copyright (C) 2026 Rafael Meneses; SPDX-License-Identifier: GPL-2.0-or-later */
+/* Scoped to the plugin; no JavaScript or external font requests. */
+.rtio-corner-ribbon {
+	--rtio-cr-accent: #00e49a;
+	--rtio-cr-background: #000;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9990;
+	width: 160px;
+	height: 160px;
+	margin: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.rtio-corner-ribbon .rtio-cr-band {
+	box-sizing: border-box;
+	position: absolute;
+	top: 38px;
+	left: -52px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 240px;
+	min-height: 40px;
+	margin: 0;
+	padding: 7px 25px;
+	transform: rotate(-45deg);
+	border: 1px solid var(--rtio-cr-accent);
+	background: var(--rtio-cr-background);
+	color: var(--rtio-cr-accent);
+	box-shadow: 0 3px 12px #0006;
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: 0.15em;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.rtio-corner-ribbon a.rtio-cr-band {
+	pointer-events: auto;
+}
+
+.rtio-corner-ribbon a.rtio-cr-band:hover,
+.rtio-corner-ribbon a.rtio-cr-band:focus-visible {
+	background: var(--rtio-cr-accent);
+	color: var(--rtio-cr-background);
+}
+
+.rtio-corner-ribbon a.rtio-cr-band:focus-visible {
+	outline: 2px solid var(--rtio-cr-accent);
+	outline-offset: 3px;
+	text-decoration: underline;
+}
+
+.rtio-corner-ribbon .rtio-cr-band--long {
+	font-size: 10px;
+	letter-spacing: 0.02em;
+}
+
+body.admin-bar .rtio-corner-ribbon {
+	top: 32px;
+}
+
+@media (max-width: 782px) {
+	body.admin-bar .rtio-corner-ribbon {
+		top: 46px;
+	}
+}
+
+@media (max-width: 900px) {
+	body.rtio-cr-active::before {
+		content: "";
+		display: block;
+		height: 48px;
+	}
+}
+
+@media (max-width: 600px) {
+	body.rtio-cr-active::before {
+		height: 72px;
+	}
+
+	.rtio-corner-ribbon {
+		width: 132px;
+		height: 132px;
+	}
+
+	.rtio-corner-ribbon .rtio-cr-band {
+		top: 31px;
+		left: -47px;
+		width: 208px;
+		min-height: 34px;
+		font-size: 11px;
+		letter-spacing: 0.12em;
+	}
+
+	.rtio-corner-ribbon .rtio-cr-band--long {
+		font-size: 8px;
+		letter-spacing: 0;
+	}
+}
+
+@media print {
+	.rtio-corner-ribbon,
+	body.rtio-cr-active::before {
+		display: none;
+	}
+}

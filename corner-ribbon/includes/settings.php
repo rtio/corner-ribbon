@@ -40,7 +40,7 @@ function rtio_cr_admin_assets( $hook ) {
 		return;
 	}
 	wp_enqueue_style( 'wp-color-picker' );
-	wp_enqueue_script( 'rtio-cr-settings', plugins_url( 'assets/settings.js', dirname( __DIR__ ) . '/corner-ribbon.php' ), array( 'wp-color-picker' ), '1.1.0', true );
+	wp_enqueue_script( 'rtio-cr-settings', plugins_url( 'assets/settings.js', dirname( __DIR__ ) . '/corner-ribbon.php' ), array( 'wp-color-picker' ), '1.1.1', true );
 }
 add_action( 'admin_enqueue_scripts', 'rtio_cr_admin_assets' );
 

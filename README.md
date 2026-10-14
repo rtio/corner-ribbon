@@ -14,7 +14,7 @@ python3 scripts/build.py
 
 In WordPress, open **Plugins → Add New Plugin → Upload Plugin**, upload `dist/corner-ribbon.zip`, and activate it. To update an installed copy, select **Replace current with uploaded**. GitHub's source ZIP contains the whole repository; use the built plugin ZIP for installation.
 
-Requires WordPress 6.0+ and PHP 7.4+. Tested with WordPress 7.0.4, PHP 8.4.17, and the Beep theme.
+Requires WordPress 6.0+ and PHP 7.4+. Tested with WordPress 7.0.4 and 7.1.3, PHP 8.4.17, and the Beep theme.
 
 ## Configure
 

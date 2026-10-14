@@ -3,8 +3,11 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 /**
  * Plugin Name: Corner Ribbon
+ * Plugin URI: https://github.com/rtio/corner-ribbon
  * Description: A quiet diagonal tribute ribbon with editable wording, colors, and an optional link.
- * Version: 1.1.0
+ * Version: 1.1.1
+ * Author: Rafael Meneses
+ * Author URI: https://rtio.dev/
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * License: GPL-2.0-or-later
@@ -62,7 +65,7 @@ function rtio_cr_enqueue() {
 	if ( ! rtio_cr_is_visible() ) {
 		return;
 	}
-	wp_enqueue_style( 'rtio-corner-ribbon', plugins_url( 'assets/ribbon.css', __FILE__ ), array(), '1.1.0' );
+	wp_enqueue_style( 'rtio-corner-ribbon', plugins_url( 'assets/ribbon.css', __FILE__ ), array(), '1.1.1' );
 }
 add_action( 'wp_enqueue_scripts', 'rtio_cr_enqueue' );
 

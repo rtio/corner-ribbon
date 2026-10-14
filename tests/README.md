@@ -2,7 +2,7 @@
 
 These tests use real WordPress APIs and authenticated HTTP requests. They change options and create a disposable subscriber. Use a fresh local test installation, never a production site or a local copy containing important data.
 
-Requirements: PHP, Node (syntax check only), Python 3, WP-CLI, a running WordPress installation with Corner Ribbon active, and a test administrator. No Python packages or npm dependencies are needed. Both MySQL and the official SQLite integration can be used; this release was tested with WordPress 7.0.4, PHP 8.4.17, SQLite, and Beep.
+Requirements: PHP, Node (syntax check only), Python 3, WP-CLI, a running WordPress installation with Corner Ribbon active, and a test administrator. No Python packages or npm dependencies are needed. Both MySQL and the official SQLite integration can be used; this release was tested with WordPress 7.0.4 and 7.1.3, PHP 8.4.17, SQLite, and Beep.
 
 ## Run
 
@@ -29,3 +29,16 @@ The round-trip parser compares decoded field values and the ribbon's actual mark
 ## Browser verification
 
 Also verified with JavaScript enabled: both color pickers initialize with descriptive accessible names; changing both picker values and submitting the actual form persists the name, URL, and colors; the frontend's computed text, border, and background colors match; the link has keyboard focus; picker JavaScript is absent from the frontend. Desktop/mobile layout checks from 1.0.0 remain applicable because ribbon geometry is unchanged.
+
+## Directory checks
+
+Install the official [Plugin Check](https://wordpress.org/plugins/plugin-check/) tool on the disposable site. Include its CLI bootstrap so runtime checks run alongside static checks:
+
+```sh
+wp --path="$RIBBON_WP_PATH" plugin install plugin-check --activate
+wp --path="$RIBBON_WP_PATH" plugin check corner-ribbon \
+  --require="$RIBBON_WP_PATH/wp-content/plugins/plugin-check/cli.php" \
+  --format=strict-json --include-low-severity-errors --include-low-severity-warnings
+```
+
+Plugin Check supplements the behavior tests and manual directory review; it does not guarantee directory approval.

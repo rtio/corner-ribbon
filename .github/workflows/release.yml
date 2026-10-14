@@ -1,0 +1,128 @@
+# Copyright (C) 2026 Rafael Meneses
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Test and release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Validate installable package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      commit: ${{ steps.metadata.outputs.commit }}
+      version: ${{ steps.metadata.outputs.version }}
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: qa-only
+          MYSQL_DATABASE: ribbon_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        with:
+          php-version: '8.4'
+          extensions: mysqli, mbstring, zip
+          tools: wp-cli
+          coverage: none
+      - name: Test release safeguards
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Validate source and release tag
+        id: metadata
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" == release ]]; then
+            git merge-base --is-ancestor HEAD origin/main
+            version=$(python3 scripts/release.py --tag "$RELEASE_TAG")
+          else
+            version=$(python3 scripts/release.py)
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Build and verify the installable ZIP
+        run: |
+          python3 scripts/build.py
+          python3 scripts/release.py --archive dist/rtio-corner-ribbon.zip
+      - name: Run WordPress behavior tests and Plugin Check
+        run: bash scripts/ci-check.sh
+      - name: Keep the tested package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: rtio-corner-ribbon
+          path: dist/rtio-corner-ribbon.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    name: Publish to WordPress.org
+    needs: checks
+    if: >-
+      github.event_name == 'release' &&
+      !github.event.release.prerelease &&
+      vars.WORDPRESS_ORG_APPROVED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: wordpress-org
+    concurrency:
+      group: wordpress-org
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.checks.outputs.commit }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: rtio-corner-ribbon
+          path: dist
+      - name: Verify and extract the tested package
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          python3 scripts/release.py --tag "$RELEASE_TAG" --archive dist/rtio-corner-ribbon.zip
+          python3 -m zipfile -e dist/rtio-corner-ribbon.zip "$RUNNER_TEMP/ribbon-release"
+      - name: Reject an existing version or downgrade
+        run: |
+          if ! command -v svn >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install --no-install-recommends -y subversion
+          fi
+          svn list --xml --non-interactive https://plugins.svn.wordpress.org/rtio-corner-ribbon/tags/ > "$RUNNER_TEMP/ribbon-svn-tags.xml"
+          python3 scripts/release.py --svn-list "$RUNNER_TEMP/ribbon-svn-tags.xml"
+      - name: Commit the release to WordPress.org
+        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # 2.3.0
+        env:
+          SVN_USERNAME: ${{ vars.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: rtio-corner-ribbon
+          VERSION: ${{ needs.checks.outputs.version }}
+          BUILD_DIR: ${{ runner.temp }}/ribbon-release/rtio-corner-ribbon
+      - name: Verify the published SVN tag
+        env:
+          RELEASE_VERSION: ${{ needs.checks.outputs.version }}
+        run: |
+          svn export --non-interactive "https://plugins.svn.wordpress.org/rtio-corner-ribbon/tags/$RELEASE_VERSION/" "$RUNNER_TEMP/ribbon-published"
+          diff -r "$RUNNER_TEMP/ribbon-release/rtio-corner-ribbon" "$RUNNER_TEMP/ribbon-published"

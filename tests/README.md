@@ -26,6 +26,21 @@ Start your local server before running the suite. The runner requires a loopback
 
 The round-trip parser compares decoded field values and the ribbon's actual markup instead of searching for arbitrary matching text elsewhere on the page. Distinct color values catch swapped/defaulted colors, and two successive saves catch stale persistence.
 
+## Release automation checks
+
+Run the release guard tests without WordPress or external dependencies:
+
+```sh
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+python3 scripts/release.py
+python3 scripts/build.py
+python3 scripts/release.py --tag v1.1.2 --archive dist/rtio-corner-ribbon.zip
+```
+
+Replace `v1.1.2` with the version being released. These tests reject mismatched or malformed versions, missing or symlinked source files, incomplete/extra/duplicate/modified ZIP entries, SVN overwrites or downgrades, and Plugin Check findings even when the tool exits successfully.
+
+GitHub Actions runs these checks plus the real WordPress tests above. `scripts/ci-check.sh` creates an isolated WordPress installation using the workflow's disposable MySQL service and installs the built ZIP. The workflow uses current stable WordPress, PHP 8.4, and Plugin Check 2.1.0. Its deployment job is gated by directory approval and verifies the published SVN tag against the tested artifact. Local tests and CI validation cannot verify live SVN authentication before approval.
+
 ## Browser verification
 
 Also verified with JavaScript enabled: both color pickers initialize with descriptive accessible names; changing both picker values and submitting the actual form persists the name, URL, and colors; the frontend's computed text, border, and background colors match; the link has keyboard focus; picker JavaScript is absent from the frontend. Desktop/mobile layout checks from 1.0.0 remain applicable because ribbon geometry is unchanged.

@@ -36,7 +36,7 @@ Install the official [Plugin Check](https://wordpress.org/plugins/plugin-check/)
 
 ```sh
 wp --path="$RIBBON_WP_PATH" plugin install plugin-check --activate
-wp --path="$RIBBON_WP_PATH" plugin check corner-ribbon \
+wp --path="$RIBBON_WP_PATH" plugin check rtio-corner-ribbon \
   --require="$RIBBON_WP_PATH/wp-content/plugins/plugin-check/cli.php" \
   --format=strict-json --include-low-severity-errors --include-low-severity-warnings
 ```

@@ -17,11 +17,11 @@ function rtio_cr_register_settings() {
 	);
 	add_settings_section( 'rtio_cr_appearance', '', '__return_false', 'corner-ribbon' );
 	$fields = array(
-		'enabled'    => __( 'Visibility', 'corner-ribbon' ),
-		'text'       => __( 'Name or message', 'corner-ribbon' ),
-		'accent'     => __( 'Text and border color', 'corner-ribbon' ),
-		'background' => __( 'Background color', 'corner-ribbon' ),
-		'url'        => __( 'Link URL (optional)', 'corner-ribbon' ),
+		'enabled'    => __( 'Visibility', 'rtio-corner-ribbon' ),
+		'text'       => __( 'Name or message', 'rtio-corner-ribbon' ),
+		'accent'     => __( 'Text and border color', 'rtio-corner-ribbon' ),
+		'background' => __( 'Background color', 'rtio-corner-ribbon' ),
+		'url'        => __( 'Link URL (optional)', 'rtio-corner-ribbon' ),
 	);
 	foreach ( $fields as $key => $label ) {
 		add_settings_field( $key, $label, 'rtio_cr_field', 'corner-ribbon', 'rtio_cr_appearance', array( 'label_for' => 'rtio-cr-' . $key, 'key' => $key ) );
@@ -30,7 +30,7 @@ function rtio_cr_register_settings() {
 add_action( 'admin_init', 'rtio_cr_register_settings' );
 
 function rtio_cr_menu() {
-	add_options_page( __( 'Corner Ribbon', 'corner-ribbon' ), __( 'Corner Ribbon', 'corner-ribbon' ), 'manage_options', 'corner-ribbon', 'rtio_cr_page' );
+	add_options_page( __( 'Corner Ribbon', 'rtio-corner-ribbon' ), __( 'Corner Ribbon', 'rtio-corner-ribbon' ), 'manage_options', 'corner-ribbon', 'rtio_cr_page' );
 }
 add_action( 'admin_menu', 'rtio_cr_menu' );
 
@@ -40,7 +40,7 @@ function rtio_cr_admin_assets( $hook ) {
 		return;
 	}
 	wp_enqueue_style( 'wp-color-picker' );
-	wp_enqueue_script( 'rtio-cr-settings', plugins_url( 'assets/settings.js', dirname( __DIR__ ) . '/corner-ribbon.php' ), array( 'wp-color-picker' ), '1.1.1', true );
+	wp_enqueue_script( 'rtio-cr-settings', plugins_url( 'assets/settings.js', dirname( __DIR__ ) . '/corner-ribbon.php' ), array( 'wp-color-picker' ), '1.1.2', true );
 }
 add_action( 'admin_enqueue_scripts', 'rtio_cr_admin_assets' );
 
@@ -52,22 +52,22 @@ function rtio_cr_field( $args ) {
 	$name     = 'rtio_corner_ribbon[' . $key . ']';
 	if ( 'enabled' === $key ) {
 		?>
-		<label><input type="checkbox" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>" value="1" <?php checked( $settings['enabled'] ); ?>> <?php esc_html_e( 'Show the ribbon on the website', 'corner-ribbon' ); ?></label>
+		<label><input type="checkbox" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>" value="1" <?php checked( $settings['enabled'] ); ?>> <?php esc_html_e( 'Show the ribbon on the website', 'rtio-corner-ribbon' ); ?></label>
 		<?php
 	} elseif ( 'text' === $key ) {
 		?>
 		<input class="regular-text" type="text" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $settings[ $key ] ); ?>" maxlength="24" aria-describedby="rtio-cr-text-help">
-		<p class="description" id="rtio-cr-text-help"><?php esc_html_e( 'Enter the full wording, for example R.I.P. ERIC. Up to 24 characters. Leave blank to hide the ribbon.', 'corner-ribbon' ); ?></p>
+		<p class="description" id="rtio-cr-text-help"><?php esc_html_e( 'Enter the full wording, for example R.I.P. ERIC. Up to 24 characters. Leave blank to hide the ribbon.', 'rtio-corner-ribbon' ); ?></p>
 		<?php
 	} elseif ( 'url' === $key ) {
 		?>
 		<input class="regular-text" type="url" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $settings[ $key ] ); ?>" placeholder="https://" aria-describedby="rtio-cr-url-help">
-		<p class="description" id="rtio-cr-url-help"><?php esc_html_e( 'An https:// or http:// address. Leave blank for a ribbon without a link.', 'corner-ribbon' ); ?></p>
+		<p class="description" id="rtio-cr-url-help"><?php esc_html_e( 'An https:// or http:// address. Leave blank for a ribbon without a link.', 'rtio-corner-ribbon' ); ?></p>
 		<?php
 	} else {
 		?>
 		<input class="regular-text rtio-cr-color" type="text" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $settings[ $key ] ); ?>" data-default-color="<?php echo esc_attr( $defaults[ $key ] ); ?>" pattern="#[a-fA-F0-9]{3}([a-fA-F0-9]{3})?" maxlength="7" aria-describedby="<?php echo esc_attr( $id . '-help' ); ?>">
-		<p class="description" id="<?php echo esc_attr( $id . '-help' ); ?>"><?php esc_html_e( 'A hex color, such as #00e49a or #000000. Choose colors with clear contrast.', 'corner-ribbon' ); ?></p>
+		<p class="description" id="<?php echo esc_attr( $id . '-help' ); ?>"><?php esc_html_e( 'A hex color, such as #00e49a or #000000. Choose colors with clear contrast.', 'rtio-corner-ribbon' ); ?></p>
 		<?php
 	}
 }
@@ -78,8 +78,8 @@ function rtio_cr_page() {
 	}
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Corner Ribbon', 'corner-ribbon' ); ?></h1>
-		<p><?php esc_html_e( 'A diagonal tribute in the upper-left corner. The ribbon scrolls with the page and leaves room above the header on small screens.', 'corner-ribbon' ); ?></p>
+		<h1><?php esc_html_e( 'Corner Ribbon', 'rtio-corner-ribbon' ); ?></h1>
+		<p><?php esc_html_e( 'A diagonal tribute in the upper-left corner. The ribbon scrolls with the page and leaves room above the header on small screens.', 'rtio-corner-ribbon' ); ?></p>
 		<form action="options.php" method="post">
 			<?php
 			settings_fields( 'rtio_corner_ribbon' );

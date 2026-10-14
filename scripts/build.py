@@ -18,11 +18,11 @@ FILES = (
 
 
 def build():
-    destination = ROOT / "dist" / "corner-ribbon.zip"
+    destination = ROOT / "dist" / "rtio-corner-ribbon.zip"
     destination.parent.mkdir(exist_ok=True)
     with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
         for name in FILES:
-            entry = zipfile.ZipInfo("corner-ribbon/" + name, date_time=(2026, 1, 1, 0, 0, 0))
+            entry = zipfile.ZipInfo("rtio-corner-ribbon/" + name, date_time=(2026, 1, 1, 0, 0, 0))
             entry.compress_type = zipfile.ZIP_DEFLATED
             entry.create_system = 3
             entry.external_attr = 0o100644 << 16
@@ -30,7 +30,7 @@ def build():
     with zipfile.ZipFile(destination) as archive:
         if archive.testzip() is not None:
             raise RuntimeError("Archive integrity verification failed")
-    print("Built dist/corner-ribbon.zip")
+    print("Built dist/rtio-corner-ribbon.zip")
 
 
 if __name__ == "__main__":

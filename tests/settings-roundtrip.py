@@ -135,7 +135,7 @@ class EditableSettingsTests(unittest.TestCase):
                 self.assertNotIn("readonly", attrs)
                 self.assertIn("rtio-cr-" + key, page.labels)
         self.assertTrue(any("/color-picker" in src for src in page.scripts))
-        self.assertTrue(any("/corner-ribbon/assets/settings.js" in src for src in page.scripts))
+        self.assertTrue(any("/rtio-corner-ribbon/assets/settings.js" in src for src in page.scripts))
 
     def test_every_field_persists_and_replaces_previous_value(self):
         cases = [

@@ -1,4 +1,4 @@
-# Corner Ribbon
+# RTIO Corner Ribbon
 
 A small WordPress plugin for an editable diagonal tribute ribbon. Set the full message, an optional link, text/border color, background color, and visibility in **Settings → Corner Ribbon**.
 
@@ -12,7 +12,7 @@ Download or clone this repository, then build the installable ZIP:
 python3 scripts/build.py
 ```
 
-In WordPress, open **Plugins → Add New Plugin → Upload Plugin**, upload `dist/corner-ribbon.zip`, and activate it. To update an installed copy, select **Replace current with uploaded**. GitHub's source ZIP contains the whole repository; use the built plugin ZIP for installation.
+In WordPress, open **Plugins → Add New Plugin → Upload Plugin**, upload `dist/rtio-corner-ribbon.zip`, and activate it. To update an installed RTIO Corner Ribbon copy, select **Replace current with uploaded**. If upgrading the original GitHub-only Corner Ribbon 1.1.0/1.1.1, deactivate it before installing this directory release. Both use the same saved settings. Keep the old copy inactive; deleting it runs its uninstaller and removes the shared settings. GitHub's source ZIP contains the whole repository; use the built plugin ZIP for installation.
 
 Requires WordPress 6.0+ and PHP 7.4+. Tested with WordPress 7.0.4 and 7.1.3, PHP 8.4.17, and the Beep theme.
 

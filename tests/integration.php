@@ -24,7 +24,7 @@ try {
 	$check( '#000000' === $defaults['background'], 'Default uses a black band.' );
 
 	// Exercise real Settings API registration and option sanitization.
-	require_once WP_PLUGIN_DIR . '/corner-ribbon/includes/settings.php';
+	require_once WP_PLUGIN_DIR . '/rtio-corner-ribbon/includes/settings.php';
 	rtio_cr_register_settings();
 	update_option( 'rtio_corner_ribbon', array( 'enabled' => '1', 'text' => '<b>In memory</b>', 'accent' => 'red; } body { display:none', 'background' => '#123456', 'url' => 'javascript:alert(1)' ) );
 	$settings = rtio_cr_settings();

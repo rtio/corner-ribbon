@@ -127,9 +127,14 @@ jobs:
           SLUG: rtio-corner-ribbon
           VERSION: ${{ needs.checks.outputs.version }}
           BUILD_DIR: ${{ runner.temp }}/ribbon-release/rtio-corner-ribbon
+          ASSETS_DIR: .wordpress-org
       - name: Verify the published SVN tag
         env:
           RELEASE_VERSION: ${{ needs.checks.outputs.version }}
         run: |
           svn export --non-interactive "https://plugins.svn.wordpress.org/rtio-corner-ribbon/tags/$RELEASE_VERSION/" "$RUNNER_TEMP/ribbon-published"
           diff -r "$RUNNER_TEMP/ribbon-release/rtio-corner-ribbon" "$RUNNER_TEMP/ribbon-published"
+      - name: Verify the published directory artwork
+        run: |
+          svn export --non-interactive "https://plugins.svn.wordpress.org/rtio-corner-ribbon/assets/" "$RUNNER_TEMP/ribbon-published-assets"
+          diff -r .wordpress-org "$RUNNER_TEMP/ribbon-published-assets"

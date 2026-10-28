@@ -1,10 +1,10 @@
-=== RTIO Corner Ribbon ===
+=== Corner Ribbon ===
 Contributors: rtiodev
 Tags: ribbon, tribute, memorial
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ Yes. Set an optional URL in Settings > Corner Ribbon. The link supports keyboard
 It becomes smaller and reserves 72 pixels above the page below 601 pixels wide. Between 601 and 900 pixels it reserves 48 pixels to keep tablet headers clear. It accounts for the standard WordPress admin bar and hides when printing. Themes with unusual body positioning or their own body pseudo-elements may need a CSS adjustment.
 
 == Changelog ==
+
+= 1.1.3 =
+Shorten the plugin name to Corner Ribbon and add a banner and icon to the directory listing. The slug, ribbon behavior, and saved settings stay the same.
 
 = 1.1.2 =
 Use the distinctive RTIO Corner Ribbon directory name and matching translation domain. Existing ribbon settings are preserved.

@@ -2,10 +2,10 @@
 // Copyright (C) 2026 Rafael Meneses
 // SPDX-License-Identifier: GPL-2.0-or-later
 /**
- * Plugin Name: RTIO Corner Ribbon
+ * Plugin Name: Corner Ribbon
  * Plugin URI: https://github.com/rtio/corner-ribbon
  * Description: A quiet diagonal tribute ribbon with editable wording, colors, and an optional link.
- * Version: 1.1.2
+ * Version: 1.1.3
  * Author: Rafael Meneses
  * Author URI: https://rtio.dev/
  * Requires at least: 6.0

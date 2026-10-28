@@ -1,4 +1,6 @@
-# RTIO Corner Ribbon
+# Corner Ribbon
+
+![Corner Ribbon with an example tribute on a sample blog](.wordpress-org/banner-1544x500.png)
 
 A WordPress plugin that adds a diagonal tribute ribbon to the top-left corner of your site. It starts with “R.I.P. ERIC” in mint green on black. You can change the wording, link, and colors.
 
